@@ -1,7 +1,10 @@
 """球種ごとの球速分布（ヒストグラム）"""
 import pandas as pd
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+try:
+    import japanize_matplotlib
+except ImportError:
+    print('日本語表示には python -m pip install japanize-matplotlib を実行してください。')
 
 df = pd.read_csv('2022_Ohtani.csv')
 df['speed_km'] = df['release_speed'] * 1.61
