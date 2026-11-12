@@ -1,18 +1,28 @@
-# ! pip install japanize_matplotlib
-import japanize_matplotlib
+# 【写真2枚目】投球の到達位置を表す散布図
+# 写真にない補足: plate_x_cm / plate_z_cm が存在しない場合は作成する。
 import pandas as pd
 import matplotlib.pyplot as plt
+try:
+    import japanize_matplotlib
+except ImportError:
+    print('日本語表示には python -m pip install japanize-matplotlib を実行してください。')
 
 df = pd.read_csv('2022_Ohtani.csv')
 df
 
-df['speed_km']=df['release_speed']*1.61
+df['speed_km'] = df['release_speed'] * 1.61
 df
-Fastball = df[df['pitch_type']=='FF']
-Cutter = df[df['pitch_type']=='FC']
-Sweeper = df[df['pitch_type']=='ST']
-Curve = df[df['pitch_type']=='CU']
-Splitter = df[df['pitch_type']=='FS']
+
+if 'plate_x_cm' not in df.columns:
+    df['plate_x_cm'] = df['plate_x'] * 30.48
+if 'plate_z_cm' not in df.columns:
+    df['plate_z_cm'] = df['plate_z'] * 30.48
+
+Fastball = df[df['pitch_type'] == 'FF']
+Cutter = df[df['pitch_type'] == 'FC']
+Sweeper = df[df['pitch_type'] == 'ST']
+Curve = df[df['pitch_type'] == 'CU']
+Splitter = df[df['pitch_type'] == 'FS']
 
 plt.figure(figsize=(10,10))
 plt.scatter(Fastball['plate_x_cm'],Fastball['plate_z_cm'])
