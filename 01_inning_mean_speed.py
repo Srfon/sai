@@ -1,7 +1,10 @@
 """イニングごとのストレート平均球速（折れ線グラフ）"""
 import pandas as pd
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+try:
+    import japanize_matplotlib
+except ImportError:
+    print('日本語表示には python -m pip install japanize-matplotlib を実行してください。')
 
 # CSVを読み込む（球速はmphからkm/hへ変換）
 df = pd.read_csv('2022_Ohtani.csv')
@@ -15,9 +18,8 @@ for i in sorted(Fastball['inning'].dropna().unique()):
     x.append(i)
     y.append(inning['speed_km'].mean())
 
-plt.plot(x, y, marker='o')
+plt.plot(x, y)
 plt.title('イニングごとのストレート平均球速')
 plt.xlabel('イニング（回）')
 plt.ylabel('ストレート平均球速（km/h）')
-plt.xticks(x)
 plt.show()
